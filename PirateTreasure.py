@@ -166,6 +166,18 @@ def findTreasureDFS(board,x,y,pirate,i,moves,visited,prev):
     print("Treasure not found.")
     printBoard(board)
 
+def uniquepaths(maze):
+    def pathHelper(i,j,r,c):
+        if (i==r or j==c):
+            return 0
+        if(maze[i][j]==0):
+            return 0
+        if(i==r-1 and j==c-1):
+            return 1
+        return pathHelper(i+1,j,r,c)+ pathHelper(i,j+1,r,c)
+    r,c = len(maze),len(maze[0])
+    return pathHelper(0,0,r,c)
+
 def createBoard(row,col,source,destination):
     board = [['-' for y in range(row)] for x in range(col)]
 
