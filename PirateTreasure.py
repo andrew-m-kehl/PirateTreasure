@@ -1,56 +1,55 @@
 """
-Pirate Treasure \_{;..;}_/ 
-INITIAL MAP
-['S', '-', '-', '#', '-', '#', 'T', '#', '-', '-']
-['-', '-', '-', '-', '-', '#', '-', '#', '-', '-']
-['-', '#', '-', '-', '-', '-', '-', '-', '-', '-']
-['-', '-', '#', '#', '-', '-', '-', '-', '-', '-']
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-['#', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+Pirate Treasure! \_{;,,;}_/
 
-BFS
-TREASURE FOUND!!
-[1, 2, 4, '#', 17, '#', 'T', '#', '-', '-']
-[3, 5, 7, 9, 13, '#', 34, '#', '-', '-']
-[6, '#', 10, 14, 16, 20, 25, 32, '-', '-']
-[8, 11, '#', '#', 21, 26, 33, '-', '-', '-']
-[12, 15, 18, 22, 27, '-', '-', '-', '-', '-']
-['#', 19, 23, 28, '-', '-', '-', '-', '-', '-']
-[31, 24, 29, '-', '-', '-', '-', '-', '-', '-']
-['-', 30, '-', '-', '-', '-', '-', '-', '-', '-']
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+Initial Map. 'S' = Start, 'T' = Finish, '#' = Wall
+['S', '-', '-', '-', '-', '-', '-', '#', 'T', '-']
+['-', '#', '-', '#', '#', '-', '#', '-', '-', '#']
+['-', '-', '-', '-', '-', '-', '#', '-', '-', '-']
+['-', '-', '-', '-', '#', '#', '-', '-', '#', '-']
+['-', '#', '-', '-', '-', '#', '-', '-', '-', '-']
+['-', '-', '#', '-', '-', '-', '-', '-', '#', '-']
+['#', '-', '-', '-', '#', '-', '#', '-', '-', '-']
+['-', '-', '-', '-', '-', '-', '-', '-', '#', '-']
+['-', '-', '-', '-', '#', '-', '-', '-', '-', '-']
+['-', '-', '#', '-', '-', '-', '-', '-', '-', '-']
 
-DFS
-TREASURE FOUND!!
-[0, 'X', 'X', '#', 'X', '#', 'T', '#', '-', '-']
-[1, 'X', 'X', 'X', 'X', '#', 67, '#', '-', '-']
-[2, '#', 'X', 'X', 'X', 'X', 66, 65, 64, 63]
-[3, '-', '#', '#', 57, 58, 59, 60, 61, 62]
-[4, 5, 'X', 'X', 56, 55, 54, 53, 52, 51]
-['#', 6, 43, 44, 45, 46, 47, 48, 49, 50]
-['-', 7, 42, 41, 40, 39, 38, 37, 36, 35]
-['-', 8, 27, 28, 29, 30, 31, 32, 33, 34]
-['-', 9, 26, 25, 24, 23, 22, 21, 20, 19]
-['-', 10, 11, 12, 13, 14, 15, 16, 17, 18]
+BFS Search
+[ '1', '2', '4', '6','10','14','18', '#', 'T', '-']
+[ '3', '#', '7', '#', '#','19', '#','73','77', '#']
+[ '5', '8','11','15','20','24', '#','65','72','76']
+[ '9','12','16','21', '#', '#','52','59', '#','71']
+['13', '#','22','25','27', '#','47','51','58','64']
+['17','23', '#','28','31','36','41','46', '#','68']
+[ '#','26','29','32', '#','42', '#','50','56','62']
+['35','30','33','37','43','48','53','57', '#','67']
+['40','34','38','44', '#','54','60','63','69','74']
+['45','39', '#','49','55','61','66','70','75', '-']
+
+
+Best Path: [(0, 0), (0, 1), (0, 2), (1, 2), (2, 2), (2, 3), (3, 3), (4, 3), (4, 4), (5, 4), (5, 5), (5, 6), (5, 7), (4, 7), (3, 7), (2, 7), (2, 8), (1, 8), (0, 8)]
+['S', '1', '2', '-', '-', '-', '-', '#', 'T', '-']
+['-', '#', '3', '#', '#', '-', '#', '-','17', '#']
+['-', '-', '4', '5', '-', '-', '#','15','16', '-']
+['-', '-', '-', '6', '#', '#', '-','14', '#', '-']
+['-', '#', '-', '7', '8', '#', '-','13', '-', '-']
+['-', '-', '#', '-', '9','10','11','12', '#', '-']
+['#', '-', '-', '-', '#', '-', '#', '-', '-', '-']
+['-', '-', '-', '-', '-', '-', '-', '-', '#', '-']
+['-', '-', '-', '-', '#', '-', '-', '-', '-', '-']
+['-', '-', '#', '-', '-', '-', '-', '-', '-', '-']
 """
-
 from collections import deque
-
+import random
+import copy
 def solve_puzzle(board,source,destination):
     pirate = 0
     moves = [[source[0],source[1]]]
     visited = [[None for x in range(row)] for y in range(col)]
     prev = [[(None) for _ in range(len(board))] for _ in range(len(board[0]))]
     findTreasureDFS(board,source[0],source[1],pirate,0,moves,visited,prev)
-    findTreasureBFS(board,source,destination)
-
 
 def findTreasureBFS(board,source,destination):
+    board2 = copy.deepcopy(board)
     pirate = 0
     y=source[0]
     x=source[1]
@@ -76,7 +75,7 @@ def findTreasureBFS(board,source,destination):
             print("TREASURE FOUND!!")
             board[y][x] = 'T'
             printBoard(board)
-            print("OMG Yaaay :D}{=======D-----------------------------}|")
+            #print("OMG Yaaay :D}{=======D-----------------------------}|")
             end_found = True
             break
 
@@ -95,9 +94,9 @@ def findTreasureBFS(board,source,destination):
                     queue.append((newY,newX))
                     visited[newY][newX] = True
                     prev[newY][newX] = (y,x)
-    bestPathBFS(y,x,prev,end_found)
+    bestPathBFS(y,x,prev,end_found,board2)
 
-def bestPathBFS(y,x,prev,end_found):
+def bestPathBFS(y,x,prev,end_found,board2):
     if end_found == True:
         moves = {(1,0):'D',(0,1):'R',(0,-1):'L',(-1,0):'U',}
 
@@ -116,9 +115,20 @@ def bestPathBFS(y,x,prev,end_found):
         direction.reverse()
         direction = "".join(direction)
         print (bestpath)
+        printBestPath(bestpath,board2)
         return bestpath, direction
     else:
         return None
+def printBestPath(bestpath,board2):
+    pirate = 1
+    queue = deque(bestpath)
+    queue.popleft()
+    while queue:
+        y,x = queue.popleft()
+        board2[y][x] = pirate
+        pirate+=1
+    board2[y][x] = 'T'
+    printBoard(board2)
 
 def findTreasureDFS(board,x,y,pirate,i,moves,visited,prev):
     "O()"
@@ -142,8 +152,12 @@ def findTreasureDFS(board,x,y,pirate,i,moves,visited,prev):
                     print("TREASURE FOUND!!")
                     printBoard(board)
                     print("OMG Yaaay :D}{=======D-----------------------------}|")
+
+                    end_found = True
+                    #print (visited)
+                    #bestPathDFS(y, x, prev,visited)
                     return True
-                
+
                 if (board[newY][newX] == '-'):
                     moves.append([newY, newX,pirate+1])
                     prev[newY][newX] = (y,x)
@@ -166,49 +180,39 @@ def findTreasureDFS(board,x,y,pirate,i,moves,visited,prev):
     print("Treasure not found.")
     printBoard(board)
 
-def uniquepaths(maze):
-    def pathHelper(i,j,r,c):
-        if (i==r or j==c):
-            return 0
-        if(maze[i][j]==0):
-            return 0
-        if(i==r-1 and j==c-1):
-            return 1
-        return pathHelper(i+1,j,r,c)+ pathHelper(i,j+1,r,c)
-    r,c = len(maze),len(maze[0])
-    return pathHelper(0,0,r,c)
-
-def createBoard(row,col,source,destination):
+def createBoard(row,col,source,destination,barriers):
     board = [['-' for y in range(row)] for x in range(col)]
 
-    #Source/Start
-    board[source[0]][source[1]]= 'S'
-
     #Barriers
-    board[0][col//2] = '#'
-    board[row//2][0] = '#'
-    board[2][1] = '#'
-    board[3][2] = '#'
-    board[3][3] = '#'
-    board[0][3] = '#'
-    board[1][5] = '#'
-    board[0][7] = '#'
-    board[1][7] = '#'
+    for i in range (0,barriers):
+        board[random.randint(0, len(board)-1)][random.randint(0, len(board)-1)] = '#'
+    # Source/Start
+    board[source[0]][source[1]] = 'S'
 
     #Destination
-    #board[col-1][row-1] = 'T'
-    #board[col-1][0] = 'T'
-    #board[0][6] = 'T'
     board[destination[0]][destination[1]]= 'T'
     printBoard(board)
     return board
 
-def printBoard(board):
+def printBoard2(board):
     _=0
     while _ < len(board):
         print(board[_])
         _+=1
     print('\n')
+
+def printBoard(board):
+    print('\n')
+    arr2 = []
+    for i in board:
+        for j in i:
+            if type(j) == int:
+                arr2.append(str(j))
+            else:
+                arr2.append(j)
+        print (arr2)
+        arr2 = []
+
 
 def includes(a,list):
     k=0
@@ -222,9 +226,19 @@ def includes(a,list):
 
 if __name__ == '__main__':
     #myName = (input('Enter name:'))
-    row = 10
-    col = 10
-    source = (0,0)
-    destination = (0,6)
-    board = createBoard(row,col,source,destination)
-    solve_puzzle(board,source,destination)
+    row = 12
+    col = 12
+    #y = int(input(print("Enter Source y:")))
+    #x = int(input(print("Enter Source x:")))
+    #source = (y,x)
+    source = (random.randint(0, row-1),random.randint(0, col-1))
+    #y = int(input(print("Enter Destination y:")))
+    #x = int(input(print("Enter Destination x:")))
+    #destination = (y,x)
+    destination = (random.randint(0, row-1),random.randint(0, col-1))
+    #barriers = int(input(print("Enter Amount of Barriers")))
+    barriers = (row*col)//4
+    board = createBoard(row,col,source,destination,barriers)
+
+    #solve_puzzle(board,source,destination)
+    findTreasureBFS(board,source,destination)
