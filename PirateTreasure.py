@@ -1,5 +1,5 @@
 """
-Pirate Treasure! \_{;,,;}_/
+Pirate Treasure!
 
 Initial Map. 'S' = Start, 'T' = Finish, '#' = Wall
 ['S', '-', '-', '-', '-', '-', '-', '#', 'T', '-']
@@ -41,6 +41,9 @@ Best Path: [(0, 0), (0, 1), (0, 2), (1, 2), (2, 2), (2, 3), (3, 3), (4, 3), (4, 
 from collections import deque
 import random
 import copy
+import tkinter as tk
+from tkinter import *
+
 def solve_puzzle(board,source,destination):
     pirate = 0
     moves = [[source[0],source[1]]]
@@ -75,7 +78,8 @@ def findTreasureBFS(board,source,destination):
             print("TREASURE FOUND!!")
             board[y][x] = 'T'
             printBoard(board)
-            #print("OMG Yaaay :D}{=======D-----------------------------}|")
+
+            print("OMG Yaaay :D}{=======D-----------------------------}|")
             end_found = True
             break
 
@@ -118,6 +122,7 @@ def bestPathBFS(y,x,prev,end_found,board2):
         printBestPath(bestpath,board2)
         return bestpath, direction
     else:
+        print("Treasure not found.")
         return None
 def printBestPath(bestpath,board2):
     pirate = 1
@@ -129,6 +134,7 @@ def printBestPath(bestpath,board2):
         pirate+=1
     board2[y][x] = 'T'
     printBoard(board2)
+    display(board2,bestpath)
 
 def findTreasureDFS(board,x,y,pirate,i,moves,visited,prev):
     "O()"
@@ -191,15 +197,11 @@ def createBoard(row,col,source,destination,barriers):
 
     #Destination
     board[destination[0]][destination[1]]= 'T'
+    print("Welcome to Pirate Treasure! \_{;,,;}_/")
+    print("Initial Map. 'S' = Start, 'T' = Treasure, '#' = Wall")
     printBoard(board)
     return board
 
-def printBoard2(board):
-    _=0
-    while _ < len(board):
-        print(board[_])
-        _+=1
-    print('\n')
 
 def printBoard(board):
     print('\n')
@@ -213,32 +215,74 @@ def printBoard(board):
         print (arr2)
         arr2 = []
 
+def display(board2,bestpath):
+    win = tk.Tk()
+    win.title("Pirate Treasure")
+    font1 = ('Times', 10, 'normal')  # font family, size, style
+    win.configure(background='light blue')
+    width= len(board2)*33
+    height = len(board2[0])*33
+    d = str(width) + "x" + str(height)
+    win.geometry(d)
 
-def includes(a,list):
-    k=0
-    for i in list:
-        if a[0] == i[0] and a[1]==i[1]:
-            return True,k
-        else:
-            k+=1
-    return False,k
+    my_row, my_col = 1, 0
+    my_labels = []
 
+    for data in board2:
+        for my_col in range(len(data)):
+            my_label = tk.Label(win, text=data[my_col], font=font1)
+            my_label.grid(row=my_row, column=my_col, padx=6, pady=3)
+            my_labels.append(my_label)
+        my_row = my_row + 1
+
+    for i in bestpath:
+        m=(i[0]*len(board2[0])+i[1])
+        my_labels[m].config(bg='green')
+
+    m = bestpath[0][0] * len(board2[0]) + bestpath[0][1]
+    my_labels[m].config(bg='yellow')
+
+    n = bestpath[-1][0] * len(board2[0]) + bestpath[-1][1]
+    my_labels[n].config(bg='yellow')
+
+    win.mainloop()
+def runboard(board):
+    win = tk.Tk()
+    win.title("Pirate Treasure")
+    font1 = ('Times', 10, 'normal')  # font family, size, style
+    win.configure(background='light blue')
+    width = len(board) * 33
+    height = len(board[0]) * 33
+    d = str(width) + "x" + str(height)
+    win.geometry(d)
+
+    my_row, my_col = 1, 0
+    my_labels = []
+
+    for data in board:
+        for my_col in range(len(data)):
+            my_label = tk.Label(win, text=data[my_col], font=font1)
+            my_label.grid(row=my_row, column=my_col, padx=6, pady=3)
+            my_labels.append(my_label)
+        my_row = my_row + 1
+    win.mainloop()
 
 if __name__ == '__main__':
     #myName = (input('Enter name:'))
-    row = 12
-    col = 12
+    row = 15
+    col = 15
     #y = int(input(print("Enter Source y:")))
     #x = int(input(print("Enter Source x:")))
     #source = (y,x)
-    source = (random.randint(0, row-1),random.randint(0, col-1))
+    source = (random.randint(0, col-1),random.randint(0, row-1))
     #y = int(input(print("Enter Destination y:")))
     #x = int(input(print("Enter Destination x:")))
     #destination = (y,x)
-    destination = (random.randint(0, row-1),random.randint(0, col-1))
+    destination = (random.randint(0, col-1),random.randint(0, row-1))
     #barriers = int(input(print("Enter Amount of Barriers")))
-    barriers = (row*col)//4
+    barriers = (row*col)//3
     board = createBoard(row,col,source,destination,barriers)
-
+    #runboard(board)
     #solve_puzzle(board,source,destination)
+
     findTreasureBFS(board,source,destination)
