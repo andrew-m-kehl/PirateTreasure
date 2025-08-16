@@ -1,0 +1,1 @@
+Pirate Treasure 🏴‍☠️ is a python based BFS (Breadth First Search) program that creates a random map using a graphing function, then calculates the shortest path from a start point 'S' to an end point 'T' while avoiding obsticles '#'.
